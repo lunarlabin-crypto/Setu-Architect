@@ -17,8 +17,8 @@ const CONTACT_POINTS = [
   },
   {
     title: 'Email',
-    value: 'info@setuarchitecture.com',
-    href: 'mailto:info@setuarchitecture.com'
+    value: 'setuarchitect@gmail.com',
+    href: 'mailto:setuarchitect@gmail.com'
   },
   {
     title: 'Location',
@@ -28,7 +28,7 @@ const CONTACT_POINTS = [
 ];
 
 export default function ContactPageClient() {
-  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
+  const [formData, setFormData] = useState({ name: '', email: '', phone: '', message: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [statusMessage, setStatusMessage] = useState({ type: '', text: '' });
 
@@ -59,7 +59,7 @@ export default function ContactPageClient() {
         type: 'success',
         text: 'Your message has been sent successfully. A confirmation email has been sent to your inbox.'
       });
-      setFormData({ name: '', email: '', message: '' });
+      setFormData({ name: '', email: '', phone: '', message: '' });
     } catch (error) {
       setStatusMessage({ type: 'error', text: error.message || 'Something went wrong.' });
     } finally {
@@ -180,6 +180,18 @@ export default function ContactPageClient() {
                     onChange={handleChange}
                     className="w-full rounded-xl border border-neutral-300 bg-[#fbfaf7] px-4 py-3 outline-none focus:border-[#8b5e1c]"
                     placeholder="Your email"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="mb-2 block text-sm font-semibold text-neutral-700">Phone</label>
+                  <input
+                    type="tel"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleChange}
+                    className="w-full rounded-xl border border-neutral-300 bg-[#fbfaf7] px-4 py-3 outline-none focus:border-[#8b5e1c]"
+                    placeholder="Your phone number"
                     required
                   />
                 </div>

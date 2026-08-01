@@ -15,6 +15,7 @@ export default function ContactSection() {
     const payload = {
       name: form.name.value,
       email: form.email.value,
+      phone: form.phone.value,
       message: form.message.value
     };
 
@@ -52,8 +53,8 @@ export default function ContactSection() {
             </a>
           </p>
           <p className="text-sm text-neutral-600 font-medium mb-3">
-            <a href="mailto:info@yourcompany.com" className="hover:text-[#8b5e1c] transition-colors">
-              info@yourcompany.com
+            <a href="mailto:setuarchitect@gmail.com" className="hover:text-[#8b5e1c] transition-colors">
+              setuarchitect@gmail.com
             </a>
           </p>
           <p className="text-sm text-neutral-500 leading-relaxed mt-6">
@@ -80,6 +81,13 @@ export default function ContactSection() {
               className="border border-neutral-200 px-4 py-3.5 text-sm text-neutral-900 focus:outline-none focus:border-[#8b5e1c] bg-white transition-colors"
             />
           </div>
+          <input
+            name="phone"
+            type="tel"
+            placeholder="Phone Number"
+            required
+            className="border border-neutral-200 px-4 py-3.5 text-sm text-neutral-900 focus:outline-none focus:border-[#8b5e1c] bg-white transition-colors"
+          />
           <textarea
             name="message"
             rows={5}

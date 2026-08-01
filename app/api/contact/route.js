@@ -2,11 +2,11 @@ import nodemailer from 'nodemailer';
 
 export async function POST(request) {
   try {
-    const { name, email, message } = await request.json();
+    const { name, email, phone, message } = await request.json();
 
-    if (!name || !email || !message) {
+    if (!name || !email || !phone || !message) {
       return Response.json(
-        { message: 'Please fill in your name, email, and message.' },
+        { message: 'Please fill in your name, email, phone number, and message.' },
         { status: 400 }
       );
     }
@@ -63,12 +63,13 @@ export async function POST(request) {
       to: adminEmail,
       replyTo: email,
       subject: 'New website enquiry from Setu Architecture',
-      text: `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`,
+      text: `Name: ${name}\nEmail: ${email}\nPhone: ${phone}\n\nMessage:\n${message}`,
       html: `
         <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #111827;">
           <h2>New website enquiry</h2>
           <p><strong>Name:</strong> ${name}</p>
           <p><strong>Email:</strong> ${email}</p>
+          <p><strong>Phone:</strong> ${phone}</p>
           <p><strong>Message:</strong></p>
           <p>${safeMessage}</p>
         </div>

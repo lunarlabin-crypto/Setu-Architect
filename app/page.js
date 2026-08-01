@@ -50,7 +50,7 @@ const PROJECTS = [
 export default function HomePage() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [lightboxImg, setLightboxImg] = useState(null);
-  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
+  const [formData, setFormData] = useState({ name: '', email: '', phone: '', message: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [statusMessage, setStatusMessage] = useState({ type: '', text: '' });
 
@@ -316,7 +316,7 @@ export default function HomePage() {
                 <div className="flex gap-4">
                   <Mail className="h-6 w-6 text-[#8b5e1c] shrink-0 mt-1" />
                   <div>
-                    <a href="mailto:info@setuarchitecture.com" className="text-base sm:text-lg hover:text-[#8b5e1c] transition-colors">info@setuarchitecture.com</a>
+                    <a href="mailto:setuarchitect@gmail.com" className="text-base sm:text-lg hover:text-[#8b5e1c] transition-colors">setuarchitect@gmail.com</a>
                   </div>
                 </div>
               </div>
@@ -349,6 +349,18 @@ export default function HomePage() {
                       onChange={handleInputChange}
                       className="w-full bg-neutral-100 border border-neutral-200 rounded-sm px-4 py-3 text-neutral-900 focus:outline-none focus:border-[#8b5e1c] transition-colors"
                       placeholder="abc@example.com"
+                      required
+                    />
+                  </div>
+                  <div className="sm:col-span-2">
+                    <label className="block text-sm font-medium text-neutral-600 mb-2">Phone</label>
+                    <input
+                      type="tel"
+                      name="phone"
+                      value={formData.phone}
+                      onChange={handleInputChange}
+                      className="w-full bg-neutral-100 border border-neutral-200 rounded-sm px-4 py-3 text-neutral-900 focus:outline-none focus:border-[#8b5e1c] transition-colors"
+                      placeholder="Your Phone Number"
                       required
                     />
                   </div>
