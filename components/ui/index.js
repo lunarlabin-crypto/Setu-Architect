@@ -15,3 +15,4 @@ export { SectionHeading }   from './SectionHeading';
 export { AnimatedSection }  from './AnimatedSection';
 export { Navbar }           from './Navbar';
 export { SetuLogo }         from './SetuLogo';
+export { WhatsAppWidget }   from './WhatsAppWidget';

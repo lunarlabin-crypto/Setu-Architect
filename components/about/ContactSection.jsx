@@ -48,8 +48,8 @@ export default function ContactSection() {
           <h2 className="text-3xl font-display font-bold uppercase tracking-wide text-neutral-900 mb-6">Get in touch</h2>
 
           <p className="text-sm text-neutral-600 font-medium mb-3">
-            <a href="tel:+911234567890" className="hover:text-[#8b5e1c] transition-colors">
-              +91 (000) 000-00-000
+            <a href="tel:+919428873366" className="hover:text-[#8b5e1c] transition-colors">
+              +91 9428873366
             </a>
           </p>
           <p className="text-sm text-neutral-600 font-medium mb-3">

@@ -1,5 +1,6 @@
 import { Montserrat, Open_Sans } from 'next/font/google';
 import { Navbar } from '@/components/ui';
+import { WhatsAppWidget } from '@/components/ui/WhatsAppWidget';
 import '../styles/globals.css';
 
 /* ─── Font Loading ──────────────────────────────────────────── */
@@ -134,6 +135,7 @@ export default function RootLayout({ children }) {
           <Navbar />
           {children}
         </div>
+        <WhatsAppWidget />
       </body>
     </html>
   );

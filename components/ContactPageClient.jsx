@@ -7,13 +7,8 @@ import { Container } from '@/components/ui';
 const CONTACT_POINTS = [
   {
     title: 'Call Us',
-    value: '+91 9876545678',
-    href: 'tel:+919876545678'
-  },
-  {
-    title: 'Office Phone',
-    value: '+91 (079) 400-37-661',
-    href: 'tel:+9107940037661'
+    value: '+91 9428873366',
+    href: 'tel:+919428873366'
   },
   {
     title: 'Email',
@@ -105,7 +100,7 @@ export default function ContactPageClient() {
             </h2>
           </div>
 
-          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+          <div className="grid gap-4 md:grid-cols-3">
             {CONTACT_POINTS.map((point) => (
               <div
                 key={point.title}

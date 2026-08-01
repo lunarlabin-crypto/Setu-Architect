@@ -308,8 +308,7 @@ export default function HomePage() {
                 <div className="flex gap-4">
                   <Phone className="h-6 w-6 text-[#8b5e1c] shrink-0 mt-1" />
                   <div>
-                    <a href="tel:+9107929751800" className="block text-base sm:text-lg hover:text-[#8b5e1c] transition-colors">+91 9876545678</a>
-                    <a href="tel:+9107940037661" className="block text-base sm:text-lg hover:text-[#8b5e1c] transition-colors">+91 (079) 400-37-661</a>
+                    <a href="tel:+919428873366" className="block text-base sm:text-lg hover:text-[#8b5e1c] transition-colors">+91 9428873366</a>
                   </div>
                 </div>
 
