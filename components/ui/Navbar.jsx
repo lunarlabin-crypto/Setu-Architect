@@ -20,8 +20,7 @@ const NAV_LINKS = [
     ]
   },
   { name: 'Projects', href: '/projects' },
-  { name: 'Careers', href: '/career' },
-  { name: 'Contact Us', href: '/contacts' },
+  { name: 'Contact Us', href: '/contact' },
 ];
 
 export function Navbar() {

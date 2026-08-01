@@ -11,12 +11,12 @@ export async function POST(request) {
       );
     }
 
-    const adminEmail = process.env.ADMIN_EMAIL || 'lunarlabin@gmail.com';
-    const smtpHost = process.env.SMTP_HOST;
+    const adminEmail = (process.env.ADMIN_EMAIL || 'setuarchitect@gmail.com').trim();
+    const smtpHost = process.env.SMTP_HOST?.trim();
     const smtpPort = Number(process.env.SMTP_PORT || 587);
-    const smtpUser = process.env.SMTP_USER;
-    const smtpPass = process.env.SMTP_PASS;
-    const smtpFrom = process.env.SMTP_FROM || smtpUser;
+    const smtpUser = process.env.SMTP_USER?.trim();
+    const smtpPass = process.env.SMTP_PASS?.trim();
+    const smtpFrom = (process.env.SMTP_FROM || smtpUser || adminEmail).trim();
 
     if (!smtpHost || !smtpUser || !smtpPass) {
       return Response.json(
@@ -38,9 +38,12 @@ export async function POST(request) {
       }
     });
 
+    const safeMessage = message.replace(/\r?\n/g, '<br />');
+
     const senderMessage = {
       from: smtpFrom,
       to: email,
+      replyTo: email,
       subject: 'Thank you for contacting Setu Architecture',
       text: `Hi ${name},\n\nThank you for reaching out to Setu Architecture. We have received your message and will get back to you shortly.\n\nYour message:\n${message}\n\nBest regards,\nSetu Architecture`,
       html: `
@@ -49,7 +52,7 @@ export async function POST(request) {
           <p>Hi ${name},</p>
           <p>We have received your message and will get back to you shortly.</p>
           <p><strong>Your message:</strong></p>
-          <p>${message}</p>
+          <p>${safeMessage}</p>
           <p>Best regards,<br />Setu Architecture</p>
         </div>
       `
@@ -58,6 +61,7 @@ export async function POST(request) {
     const adminMessage = {
       from: smtpFrom,
       to: adminEmail,
+      replyTo: email,
       subject: 'New website enquiry from Setu Architecture',
       text: `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`,
       html: `
@@ -66,7 +70,7 @@ export async function POST(request) {
           <p><strong>Name:</strong> ${name}</p>
           <p><strong>Email:</strong> ${email}</p>
           <p><strong>Message:</strong></p>
-          <p>${message}</p>
+          <p>${safeMessage}</p>
         </div>
       `
     };
