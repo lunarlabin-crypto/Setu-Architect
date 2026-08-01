@@ -4,16 +4,7 @@ import { Container } from '@/components/ui';
 import ProjectsExplorer from '@/components/ProjectsExplorer';
 import { useProjects } from '@/context/ProjectsContext';
 
-const CATEGORIES = [
-  { slug: 'all', label: 'All' },
-  { slug: 'commercial', label: 'Commercial' },
-  { slug: 'high-rise', label: 'High Rise' },
-  { slug: 'residence', label: 'Residence' },
-  { slug: 'industrial', label: 'Industrial' },
-  { slug: 'institutional', label: 'Institutional' },
-  { slug: 'hospital', label: 'Hospital' },
-  { slug: 'public', label: 'Public' }
-];
+
 
 export default function ProjectsPage() {
   const { projects } = useProjects();
@@ -44,7 +35,7 @@ export default function ProjectsPage() {
         </Container>
       </section>
 
-      <ProjectsExplorer categories={CATEGORIES} projects={projects} />
+      <ProjectsExplorer projects={projects} />
     </main>
   );
 }

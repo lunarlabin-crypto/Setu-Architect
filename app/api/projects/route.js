@@ -1,6 +1,7 @@
 import connectMongo from '@/lib/mongodb';
 import Project from '@/models/Project';
 import { NextResponse } from 'next/server';
+import { getServerSession } from 'next-auth/next';
 
 export async function GET() {
   try {
@@ -15,6 +16,11 @@ export async function GET() {
 
 export async function POST(request) {
   try {
+    const session = await getServerSession();
+    if (!session || !session.user) {
+      return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
+    }
+
     await connectMongo();
     const body = await request.json();
     const project = await Project.create(body);

@@ -94,10 +94,11 @@ function ProjectCard({ project, onDelete }) {
 }
 
 /* ─── Add Project Modal ─────────────────────────────────────── */
-function AddProjectModal({ isOpen, onClose, onAdd }) {
-  const [form, setForm] = useState({ name: '', category: CATEGORIES[0], img: '', description: '' });
+const AddProjectModal = ({ isOpen, onClose, onAdd }) => {
+  const [form, setForm] = useState({ name: '', category: '', img: '', description: '' });
   const [toast, setToast] = useState('');
   const [isUploading, setIsUploading] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleImageUpload = (e) => {
     const file = e.target.files?.[0];
@@ -147,16 +148,24 @@ function AddProjectModal({ isOpen, onClose, onAdd }) {
     };
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!form.name.trim() || !form.img) {
-      setToast('Name and Image are required.');
+    if (!form.name.trim() || !form.category.trim() || !form.img) {
+      setToast('Name, Category, and Image are required.');
       setTimeout(() => setToast(''), 3000);
       return;
     }
-    onAdd({ ...form, id: Date.now() });
-    setForm({ name: '', category: CATEGORIES[0], img: '', description: '' });
-    onClose();
+    setIsSubmitting(true);
+    try {
+      await onAdd(form);
+      setForm({ name: '', category: '', img: '', description: '' });
+      onClose();
+    } catch (err) {
+      setToast('Failed to add project.');
+      setTimeout(() => setToast(''), 3000);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   if (!isOpen) return null;
@@ -205,16 +214,13 @@ function AddProjectModal({ isOpen, onClose, onAdd }) {
                   {/* Category */}
                   <div>
                     <label className="text-xs font-semibold text-neutral-400 uppercase tracking-widest block mb-1.5">Category *</label>
-                    <div className="relative">
-                      <Tag className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-500" />
-                      <select
-                        value={form.category}
-                        onChange={e => setForm(p => ({ ...p, category: e.target.value }))}
-                        className="w-full pl-10 pr-4 py-2.5 bg-white/5 border border-white/10 rounded-xl text-white text-sm focus:outline-none focus:border-amber-500/50 transition-all appearance-none"
-                      >
-                        {CATEGORIES.map(c => <option key={c} value={c} className="bg-neutral-900">{c}</option>)}
-                      </select>
-                    </div>
+                    <input
+                      type="text" required
+                      value={form.category}
+                      onChange={e => setForm(p => ({ ...p, category: e.target.value }))}
+                      placeholder="e.g. Commercial, Residence, Hospital"
+                      className="w-full px-4 py-2.5 bg-white/5 border border-white/10 rounded-xl text-white placeholder-neutral-600 text-sm focus:outline-none focus:border-amber-500/50 transition-all"
+                    />
                   </div>
 
                   {/* Project Image */}
@@ -268,10 +274,10 @@ function AddProjectModal({ isOpen, onClose, onAdd }) {
                   {/* Submit */}
                   <button
                     type="submit"
-                    className="w-full flex items-center justify-center gap-2 py-3 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-black font-bold text-sm rounded-xl transition-all shadow-lg shadow-amber-500/20 active:scale-[0.98]"
+                    disabled={isUploading || isSubmitting}
+                    className="flex-1 w-full bg-amber-500 hover:bg-amber-600 text-neutral-950 font-bold py-2.5 rounded-xl text-sm transition-all shadow-[0_0_20px_rgba(245,158,11,0.2)] hover:shadow-[0_0_30px_rgba(245,158,11,0.4)] disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    <Plus className="w-4 h-4" />
-                    Add Project
+                    {isSubmitting ? 'Adding...' : 'Add Project'}
                   </button>
                 </form>
               </div>

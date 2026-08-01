@@ -4,13 +4,28 @@ import { useMemo, useState } from 'react';
 import { Container } from '@/components/ui';
 import Lightbox from '@/components/Lightbox';
 
-export default function ProjectsExplorer({ categories, projects }) {
+export default function ProjectsExplorer({ projects }) {
   const [activeCategory, setActiveCategory] = useState('all');
   const [lightboxProject, setLightboxProject] = useState(null);
 
+  // Dynamically generate categories from real data
+  const categories = useMemo(() => {
+    if (!projects || projects.length === 0) return [{ slug: 'all', label: 'All' }];
+    
+    // Extract unique categories
+    const uniqueCats = [...new Set(projects.map(p => p.category).filter(Boolean))];
+    
+    const catArray = [
+      { slug: 'all', label: 'All' },
+      ...uniqueCats.map(c => ({ slug: c.toLowerCase(), label: c }))
+    ];
+    return catArray;
+  }, [projects]);
+
   const filteredProjects = useMemo(() => {
+    if (!projects) return [];
     if (activeCategory === 'all') return projects;
-    return projects.filter((project) => project.category === activeCategory);
+    return projects.filter((project) => project.category?.toLowerCase() === activeCategory);
   }, [activeCategory, projects]);
 
   return (
