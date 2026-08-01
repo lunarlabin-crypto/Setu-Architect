@@ -1,0 +1,65 @@
+import NextAuth from "next-auth";
+import GoogleProvider from "next-auth/providers/google";
+import CredentialsProvider from "next-auth/providers/credentials";
+import connectMongo from "@/lib/mongodb";
+import Admin from "@/models/Admin";
+
+const handler = NextAuth({
+  providers: [
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    }),
+    CredentialsProvider({
+      name: "Credentials",
+      credentials: {
+        email: { label: "Email", type: "text" },
+        password: { label: "Password", type: "password" }
+      },
+      async authorize(credentials) {
+        await connectMongo();
+        
+        // Find admin in DB
+        const adminUser = await Admin.findOne({ email: credentials?.email.toLowerCase() });
+        const fallbackAdminEmail = process.env.NEXT_PUBLIC_ADMIN_EMAIL || 'setuarchitect@gmail.com';
+        
+        // Normally you'd hash the password and store it in the DB too. 
+        // For now, we still use the ENV password, but verify the email exists in DB or matches the fallback.
+        const adminPassword = process.env.NEXT_PUBLIC_ADMIN_PASSWORD || 'Setu@Admin2026';
+
+        if (
+          (adminUser || credentials?.email.toLowerCase() === fallbackAdminEmail.toLowerCase()) &&
+          credentials?.password === adminPassword
+        ) {
+          return { id: "1", name: "Admin", email: credentials.email };
+        }
+        return null; // Return null if login fails
+      }
+    })
+  ],
+  callbacks: {
+    async signIn({ user }) {
+      try {
+        await connectMongo();
+        
+        // SECURITY: Check if email exists in MongoDB Admin collection
+        const adminUser = await Admin.findOne({ email: user.email.toLowerCase() });
+        const fallbackAdminEmail = process.env.NEXT_PUBLIC_ADMIN_EMAIL || 'setuarchitect@gmail.com';
+        
+        if (adminUser || user.email.toLowerCase() === fallbackAdminEmail.toLowerCase()) {
+          return true; 
+        }
+        return false; // Reject anyone else trying to log in
+      } catch (error) {
+        console.error("Auth Error:", error);
+        return false;
+      }
+    }
+  },
+  pages: {
+    signIn: '/', // If login fails, redirect to home page
+    error: '/',
+  }
+});
+
+export { handler as GET, handler as POST };

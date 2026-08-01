@@ -54,6 +54,11 @@ export function Navbar() {
     }
   }, [isMobileMenuOpen]);
 
+  // Hide Navbar completely on admin routes
+  if (pathname?.startsWith('/admin')) {
+    return null;
+  }
+
   const isLandingPage = pathname === '/';
   const shouldUseLightHeader = !isLandingPage || isScrolled;
 

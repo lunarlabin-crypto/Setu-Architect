@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   ArrowRight,
@@ -14,10 +14,16 @@ import {
   Ruler,
   Factory,
   CheckCircle2,
-  X
+  X,
+  LogIn,
+  LogOut,
+  LayoutDashboard
 } from 'lucide-react';
 import Image from 'next/image';
 import { Button, Container } from '@/components/ui';
+import AdminLoginModal from '@/components/admin/AdminLoginModal';
+import { useAdminAuth } from '@/context/AdminAuthContext';
+import { useProjects } from '@/context/ProjectsContext';
 
 // --- DATA ---
 const HERO_SLIDES = [
@@ -36,16 +42,6 @@ const SERVICES = [
   { id: 7, title: 'MEPF Design', icon: Factory },
 ];
 
-const PROJECTS = [
-  { id: 1, name: 'The Skyline Tower', category: 'High Rise', img: 'https://images.unsplash.com/photo-1554469384-e58fac16e23a?auto=format&fit=crop&q=80&w=800' },
-  { id: 2, name: 'Eco-Industrial Park', category: 'Industrial', img: 'https://images.unsplash.com/photo-1581094794329-c8112a89af12?auto=format&fit=crop&q=80&w=800' },
-  { id: 3, name: 'Global Tech Hub', category: 'Commercial', img: 'https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&q=80&w=800' },
-  { id: 4, name: 'City General Hospital', category: 'Hospital', img: 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&q=80&w=800' },
-  { id: 5, name: 'Heritage Museum', category: 'Institutional', img: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=800' },
-  { id: 6, name: 'Luxury Villas', category: 'Residence', img: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&q=80&w=800' },
-];
-
-
 // --- COMPONENTS ---
 export default function HomePage() {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -53,6 +49,22 @@ export default function HomePage() {
   const [formData, setFormData] = useState({ name: '', email: '', phone: '', message: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [statusMessage, setStatusMessage] = useState({ type: '', text: '' });
+  const [showAdminLogin, setShowAdminLogin] = useState(false);
+  const { isAdmin, logout } = useAdminAuth();
+  const { projects } = useProjects();
+  const carouselRef = useRef(null);
+
+  const scrollLeft = () => {
+    if (carouselRef.current) {
+      carouselRef.current.scrollBy({ left: -400, behavior: 'smooth' });
+    }
+  };
+
+  const scrollRight = () => {
+    if (carouselRef.current) {
+      carouselRef.current.scrollBy({ left: 400, behavior: 'smooth' });
+    }
+  };
 
   // Auto-advance slider
   useEffect(() => {
@@ -60,6 +72,14 @@ export default function HomePage() {
       setCurrentSlide((prev) => (prev + 1) % HERO_SLIDES.length);
     }, 3000);
     return () => clearInterval(timer);
+  }, []);
+
+  // Check for AccessDenied error from Google OAuth
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('error') === 'AccessDenied') {
+      setShowAdminLogin(true);
+    }
   }, []);
 
   const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % HERO_SLIDES.length);
@@ -237,12 +257,17 @@ export default function HomePage() {
             <h2 className="text-3xl md:text-5xl font-display font-bold text-neutral-900 tracking-[0.14em] uppercase leading-none">Our Recent Projects</h2>
           </div>
 
-          <div className="relative">
-            <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4 xl:gap-4">
-              {PROJECTS.map((proj) => (
+          <div className="relative group/carousel">
+            {/* Scroll Container */}
+            <div 
+              ref={carouselRef}
+              className="flex gap-4 overflow-x-auto snap-x snap-mandatory scroll-smooth hide-scrollbar pb-4"
+              style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+            >
+              {projects.map((proj) => (
                 <div
                   key={proj.id}
-                  className="group relative cursor-pointer overflow-hidden bg-white h-[420px] border border-white/50 rounded-[14px] shadow-[0_8px_30px_rgba(0,0,0,0.05)]"
+                  className="group relative cursor-pointer overflow-hidden bg-white h-[420px] min-w-[300px] sm:min-w-[380px] xl:min-w-[400px] border border-white/50 rounded-[14px] shadow-[0_8px_30px_rgba(0,0,0,0.05)] snap-start flex-shrink-0"
                   onClick={() => setLightboxImg(proj.img)}
                 >
                   <img
@@ -264,10 +289,17 @@ export default function HomePage() {
               ))}
             </div>
 
-            <button className="absolute left-[-18px] top-1/2 -translate-y-1/2 hidden xl:flex h-12 w-12 items-center justify-center rounded-full bg-white/90 text-[#8b5e1c] shadow-[0_8px_24px_rgba(0,0,0,0.12)] border border-[#d8c39a] hover:bg-white transition-colors">
+            {/* Navigation Buttons */}
+            <button 
+              onClick={scrollLeft}
+              className="absolute left-[-18px] top-1/2 -translate-y-1/2 opacity-0 group-hover/carousel:opacity-100 flex h-12 w-12 items-center justify-center rounded-full bg-white/90 text-[#8b5e1c] shadow-[0_8px_24px_rgba(0,0,0,0.12)] border border-[#d8c39a] hover:bg-white transition-all z-10"
+            >
               <ChevronLeft className="h-5 w-5" />
             </button>
-            <button className="absolute right-[-18px] top-1/2 -translate-y-1/2 hidden xl:flex h-12 w-12 items-center justify-center rounded-full bg-white/90 text-[#8b5e1c] shadow-[0_8px_24px_rgba(0,0,0,0.12)] border border-[#d8c39a] hover:bg-white transition-colors">
+            <button 
+              onClick={scrollRight}
+              className="absolute right-[-18px] top-1/2 -translate-y-1/2 opacity-0 group-hover/carousel:opacity-100 flex h-12 w-12 items-center justify-center rounded-full bg-white/90 text-[#8b5e1c] shadow-[0_8px_24px_rgba(0,0,0,0.12)] border border-[#d8c39a] hover:bg-white transition-all z-10"
+            >
               <ChevronRight className="h-5 w-5" />
             </button>
           </div>
@@ -403,17 +435,56 @@ export default function HomePage() {
         <Container className="max-w-[90rem] flex flex-col md:flex-row items-center justify-between gap-4 md:gap-6 text-center md:text-left">
           <div className="flex items-center gap-2">
             <Image
-              src="/images/setu-logo.png"
+              src="/images/setu-logo-white.png"
               alt="Setu Architects"
               width={72}
               height={58}
-              className="w-auto h-10 md:h-12 object-contain brightness-0 invert"
+              className="w-auto h-10 md:h-12 object-contain"
             />
           </div>
           <p>© {new Date().getFullYear()} Setu Architecture. All Rights Reserved.</p>
-          <p>Maintained by Antigravity</p>
+
+          {/* Maintained by + Admin Login Icon */}
+          <div className="flex items-center gap-3">
+            <p>Maintained by Antigravity</p>
+
+            {isAdmin ? (
+              <div className="flex items-center gap-2">
+                <Link
+                  href="/admin"
+                  title="Admin Dashboard"
+                  className="p-1.5 rounded-lg text-amber-400 hover:text-amber-300 hover:bg-amber-500/10 transition-all duration-200"
+                >
+                  <LayoutDashboard className="w-4 h-4" />
+                </Link>
+                <button
+                  id="admin-logout-btn"
+                  onClick={logout}
+                  title="Logout"
+                  className="p-1.5 rounded-lg text-neutral-500 hover:text-red-400 hover:bg-red-500/10 transition-all duration-200"
+                >
+                  <LogOut className="w-4 h-4" />
+                </button>
+              </div>
+            ) : (
+              <button
+                id="admin-login-btn"
+                onClick={() => setShowAdminLogin(true)}
+                title="Admin Login"
+                className="p-1.5 rounded-lg text-neutral-600 hover:text-amber-400 hover:bg-amber-500/10 transition-all duration-200"
+              >
+                <LogIn className="w-4 h-4" />
+              </button>
+            )}
+          </div>
         </Container>
       </footer>
+
+      {/* ADMIN LOGIN MODAL */}
+      <AdminLoginModal
+        isOpen={showAdminLogin}
+        onClose={() => setShowAdminLogin(false)}
+      />
 
       {/* LIGHTBOX MODAL */}
       <AnimatePresence>

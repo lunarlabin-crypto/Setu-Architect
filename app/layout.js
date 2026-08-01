@@ -1,6 +1,9 @@
 import { Montserrat, Open_Sans } from 'next/font/google';
 import { Navbar } from '@/components/ui';
 import { WhatsAppWidget } from '@/components/ui/WhatsAppWidget';
+import NextAuthProvider from '@/components/providers/NextAuthProvider';
+import { AdminAuthProvider } from '@/context/AdminAuthContext';
+import { ProjectsProvider } from '@/context/ProjectsContext';
 import '../styles/globals.css';
 
 /* ─── Font Loading ──────────────────────────────────────────── */
@@ -131,11 +134,17 @@ export default function RootLayout({ children }) {
         </a>
 
         {/* Main content wrapper */}
-        <div id="main-content" className="flex flex-col min-h-dvh">
-          <Navbar />
-          {children}
-        </div>
-        <WhatsAppWidget />
+        <NextAuthProvider>
+          <AdminAuthProvider>
+            <ProjectsProvider>
+              <div id="main-content" className="flex flex-col min-h-dvh">
+                <Navbar />
+                {children}
+              </div>
+              <WhatsAppWidget />
+            </ProjectsProvider>
+          </AdminAuthProvider>
+        </NextAuthProvider>
       </body>
     </html>
   );
