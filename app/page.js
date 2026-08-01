@@ -16,7 +16,8 @@ import {
   CheckCircle2,
   X
 } from 'lucide-react';
-import { Button, Container, SetuLogo } from '@/components/ui';
+import Image from 'next/image';
+import { Button, Container } from '@/components/ui';
 
 // --- DATA ---
 const HERO_SLIDES = [
@@ -390,7 +391,13 @@ export default function HomePage() {
       <footer className="bg-neutral-950 py-12 border-t border-white/10 text-neutral-500 text-sm">
         <Container className="max-w-[90rem] flex flex-col md:flex-row items-center justify-between gap-4 md:gap-6 text-center md:text-left">
           <div className="flex items-center gap-2">
-            <SetuLogo className="h-8 md:h-10 w-auto" textColorClass="text-white" />
+            <Image
+              src="/images/setu-logo.png"
+              alt="Setu Architects"
+              width={72}
+              height={58}
+              className="w-auto h-10 md:h-12 object-contain brightness-0 invert"
+            />
           </div>
           <p>© {new Date().getFullYear()} Setu Architecture. All Rights Reserved.</p>
           <p>Maintained by Antigravity</p>

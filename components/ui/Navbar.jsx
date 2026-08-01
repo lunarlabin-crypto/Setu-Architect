@@ -2,12 +2,12 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, ChevronDown, Instagram, Linkedin, Facebook, ArrowRight } from 'lucide-react';
+import { Menu, X, ChevronDown, ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/cn';
 import { Button } from '@/components/ui/Button';
-import { SetuLogo } from './SetuLogo';
 
 const NAV_LINKS = [
   { name: 'Home', href: '/' },
@@ -75,8 +75,15 @@ export function Navbar() {
         <div className="flex items-center justify-between">
           {/* Logo & Socials */}
           <div className="flex items-center gap-8">
-            <Link href="/" className="flex items-center gap-2 group">
-              <SetuLogo className="h-10 sm:h-12 w-auto" textColorClass={textColorClass} />
+            <Link href="/" className="flex items-center group">
+              <Image
+                src={shouldUseLightHeader ? '/images/setu-logo.png' : '/images/setu-logo-white.png'}
+                alt="Setu Architects"
+                width={90}
+                height={72}
+                className="w-auto h-12 sm:h-14 object-contain transition-all duration-300"
+                priority
+              />
             </Link>
           </div>
 
