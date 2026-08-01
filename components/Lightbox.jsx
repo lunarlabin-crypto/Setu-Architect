@@ -1,23 +1,16 @@
 "use client";
 
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 export default function Lightbox({ project, onClose }) {
-  const [activeIndex, setActiveIndex] = useState(0);
-
   useEffect(() => {
     const handleKeyDown = (event) => {
       if (event.key === 'Escape') onClose();
-      if (event.key === 'ArrowRight') setActiveIndex((prev) => (prev + 1) % project.images.length);
-      if (event.key === 'ArrowLeft') setActiveIndex((prev) => (prev - 1 + project.images.length) % project.images.length);
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [onClose, project.images]);
-
-  const nextImage = () => setActiveIndex((prev) => (prev + 1) % project.images.length);
-  const prevImage = () => setActiveIndex((prev) => (prev - 1 + project.images.length) % project.images.length);
+  }, [onClose]);
 
   return (
     <div
@@ -25,7 +18,7 @@ export default function Lightbox({ project, onClose }) {
       onClick={onClose}
     >
       <button
-        className="absolute right-6 top-6 text-3xl leading-none text-white"
+        className="absolute right-6 top-6 text-3xl leading-none text-white hover:text-white/70 transition-colors"
         onClick={onClose}
         aria-label="Close project preview"
       >
@@ -33,42 +26,22 @@ export default function Lightbox({ project, onClose }) {
       </button>
 
       <div className="relative w-full max-w-4xl" onClick={(event) => event.stopPropagation()}>
-        <div className="relative overflow-hidden rounded-2xl bg-black/40">
+        <div className="relative overflow-hidden rounded-2xl bg-black/40 shadow-2xl">
           <img
-            src={project.images[activeIndex]}
-            alt={`${project.name} preview ${activeIndex + 1}`}
+            src={project.img}
+            alt={`${project.name} preview`}
             className="max-h-[70vh] w-full object-contain"
           />
-
-          {project.images.length > 1 && (
-            <>
-              <button
-                onClick={prevImage}
-                className="absolute left-3 top-1/2 -translate-y-1/2 rounded-full bg-black/50 px-3 py-2 text-2xl text-white"
-                aria-label="Previous image"
-              >
-                ‹
-              </button>
-              <button
-                onClick={nextImage}
-                className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full bg-black/50 px-3 py-2 text-2xl text-white"
-                aria-label="Next image"
-              >
-                ›
-              </button>
-            </>
-          )}
         </div>
 
         <div className="mt-6 text-center text-white">
-          <h3 className="text-xl font-display font-bold uppercase tracking-[0.18em]">{project.name}</h3>
-          <p className="mt-1 text-sm text-white/75">{project.location}</p>
-          <p className="mt-2 text-sm text-white/75">
-            {[project.type, project.developer, project.architect].filter(Boolean).join(' · ')}
-          </p>
-          {project.images.length > 1 && (
-            <p className="mt-2 text-xs uppercase tracking-[0.28em] text-white/50">
-              {activeIndex + 1} / {project.images.length}
+          <h3 className="text-xl md:text-2xl font-display font-bold uppercase tracking-[0.18em]">{project.name}</h3>
+          {project.category && (
+            <p className="mt-2 text-xs font-bold uppercase tracking-[0.3em] text-[#d8c39a]">{project.category}</p>
+          )}
+          {project.description && (
+            <p className="mt-3 text-sm md:text-base text-white/80 max-w-2xl mx-auto leading-relaxed">
+              {project.description}
             </p>
           )}
         </div>

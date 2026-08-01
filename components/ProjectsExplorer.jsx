@@ -54,7 +54,7 @@ export default function ProjectsExplorer({ categories, projects }) {
                 className="group relative aspect-[4/3] overflow-hidden rounded-[14px] bg-neutral-100 text-left shadow-[0_8px_30px_rgba(0,0,0,0.06)]"
               >
                 <img
-                  src={project.images[0]}
+                  src={project.img}
                   alt={project.name}
                   className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
