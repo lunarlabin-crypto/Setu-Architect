@@ -1,0 +1,11 @@
+# Stratos Infrastructure & Construction — robots.txt
+
+User-agent: *
+Allow: /
+
+# Disallow admin and private routes
+Disallow: /api/
+Disallow: /_next/
+
+# Sitemap
+Sitemap: https://stratosinfrastructure.com/sitemap.xml
