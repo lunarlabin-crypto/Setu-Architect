@@ -16,7 +16,7 @@ import {
   CheckCircle2,
   X
 } from 'lucide-react';
-import { Button, Container } from '@/components/ui';
+import { Button, Container, SetuLogo } from '@/components/ui';
 
 // --- DATA ---
 const HERO_SLIDES = [
@@ -155,7 +155,12 @@ export default function HomePage() {
               animate={{ opacity: 1 }}
               transition={{ duration: 0.8, delay: 0.6 }}
             >
-              <Button size="lg" rightIcon={ArrowRight} className="bg-white text-neutral-900 hover:bg-neutral-100 hover:text-black">
+              <Button 
+                onClick={() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })}
+                size="lg" 
+                rightIcon={ArrowRight} 
+                className="bg-white text-neutral-900 hover:bg-neutral-100 hover:text-black"
+              >
                 Look more
               </Button>
             </motion.div>
@@ -385,7 +390,7 @@ export default function HomePage() {
       <footer className="bg-neutral-950 py-12 border-t border-white/10 text-neutral-500 text-sm">
         <Container className="max-w-[90rem] flex flex-col md:flex-row items-center justify-between gap-4 md:gap-6 text-center md:text-left">
           <div className="flex items-center gap-2">
-            <span className="font-display font-bold text-xl md:text-2xl tracking-tighter uppercase text-white">Setu Architect</span>
+            <SetuLogo className="h-8 md:h-10 w-auto" textColorClass="text-white" />
           </div>
           <p>© {new Date().getFullYear()} Setu Architecture. All Rights Reserved.</p>
           <p>Maintained by Antigravity</p>

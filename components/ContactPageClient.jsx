@@ -96,32 +96,32 @@ export default function ContactPageClient() {
       <section className="relative bg-white py-20 md:py-24">
         <div className="absolute inset-x-0 top-0 h-px bg-neutral-200" />
         <Container className="max-w-[90rem]">
-          <div className="mb-12 text-center">
-            <p className="mb-4 text-[0.72rem] md:text-sm font-bold uppercase tracking-[0.4em] text-[#b08543]">
+          <div className="mb-10 text-center">
+            <p className="mb-2 text-[0.65rem] md:text-xs font-bold uppercase tracking-[0.3em] text-[#b08543]">
               Contact Information
             </p>
-            <h2 className="text-3xl md:text-5xl font-display font-bold uppercase tracking-[0.12em] text-neutral-900 leading-none">
+            <h2 className="text-3xl md:text-4xl font-display font-bold uppercase tracking-tight text-neutral-900">
               Connect With Us
             </h2>
           </div>
 
-          <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
             {CONTACT_POINTS.map((point) => (
               <div
                 key={point.title}
-                className="rounded-2xl border border-neutral-200 bg-[#fbfaf7] p-6 text-center shadow-[0_6px_18px_rgba(0,0,0,0.04)]"
+                className="rounded-xl border border-neutral-100 bg-[#faf9f5] px-4 py-8 text-center"
               >
-                <p className="mb-3 text-[0.7rem] font-bold uppercase tracking-[0.36em] text-[#b08543]">
+                <p className="mb-4 text-[0.65rem] font-bold uppercase tracking-[0.3em] text-[#b08543]">
                   {point.title}
                 </p>
                 {point.href === '#' ? (
-                  <p className="text-sm md:text-base font-semibold uppercase tracking-[0.16em] text-neutral-700">
+                  <p className="text-xs md:text-sm font-medium uppercase tracking-[0.12em] text-neutral-700">
                     {point.value}
                   </p>
                 ) : (
                   <a
                     href={point.href}
-                    className="text-sm md:text-base font-semibold uppercase tracking-[0.16em] text-neutral-700 transition-colors hover:text-[#8b5e1c]"
+                    className="text-xs md:text-sm font-medium uppercase tracking-[0.12em] text-neutral-700 transition-colors hover:text-[#8b5e1c]"
                   >
                     {point.value}
                   </a>
