@@ -25,27 +25,26 @@ export const metadata = {
   metadataBase: new URL('https://stratosinfrastructure.com'),
 
   title: {
-    default: 'Stratos Infrastructure & Construction',
-    template: '%s | Stratos Infrastructure & Construction',
+    default: 'Setu Architects',
+    template: '%s | Setu Architects',
   },
 
   description:
-    'Stratos Infrastructure & Construction delivers world-class engineering solutions — from large-scale civil works to precision commercial builds. Trusted by governments and Fortune 500 companies across four continents.',
+    'Setu Architects delivers world-class structural engineering and architectural design solutions — specializing in residential, commercial, industrial, and public structures since 1988.',
 
   keywords: [
-    'infrastructure construction',
-    'civil engineering',
-    'commercial construction',
-    'industrial construction',
-    'project management',
-    'Stratos Infrastructure',
-    'large-scale construction',
-    'construction company',
+    'Setu Architects',
+    'structural engineering',
+    'architecture Ahmedabad',
+    'MEPF design',
+    'residential architecture',
+    'commercial architecture',
+    'structural design Gujarat',
   ],
 
-  authors: [{ name: 'Stratos Infrastructure & Construction' }],
-  creator: 'Stratos Infrastructure & Construction',
-  publisher: 'Stratos Infrastructure & Construction',
+  authors: [{ name: 'Setu Architects' }],
+  creator: 'Setu Architects',
+  publisher: 'Setu Architects',
 
   // ─── Open Graph ───────────────────────────────────────────────
   openGraph: {
@@ -87,13 +86,6 @@ export const metadata = {
       'max-image-preview': 'large',
       'max-snippet': -1,
     },
-  },
-
-  // ─── Icons ────────────────────────────────────────────────────
-  icons: {
-    icon: [
-      { url: '/favicon.ico' },
-    ],
   },
 
   // ─── Manifest ─────────────────────────────────────────────────
